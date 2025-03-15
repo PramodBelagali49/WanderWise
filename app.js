@@ -22,6 +22,14 @@ async function  main(){
 main();  // Calling main() after defining it is better than calling it before , although it works fine
 
 
+// DELETE ROUTE     (btn in showListing.ejs)
+app.delete("/listings/:id",async(req,resp)=>{
+    let {id}=req.params;
+    const deleted=await Listing.findByIdAndDelete(id,{new:true});
+    console.log("DELETED LISTING: ",deleted);
+    resp.redirect("/listings");
+})
+
 // UPDATE ROUTE 
 app.put("/listings/:id",async(req,resp)=>{
     let {id}=req.params;
@@ -32,7 +40,7 @@ app.put("/listings/:id",async(req,resp)=>{
     resp.redirect(`/listings/${id}`)
 })
 
-// EDIT ROUTE  
+// EDIT ROUTE     (btn in showListing.ejs)
 app.get("/listings/:id/edit",async(req,resp)=>{
     let {id}=req.params;
     let listingData=await Listing.findById(id);
