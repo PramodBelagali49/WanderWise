@@ -11,6 +11,11 @@ app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
 app.use(express.urlencoded({extended:true}));
 
+app.use(express.static(path.join(__dirname,"/public"))); 
+
+const ejsMate=require("ejs-mate");
+app.engine("ejs",ejsMate);
+
 async function  main(){
     try{
         await mongoose.connect("mongodb://127.0.0.1:27017/WanderWise");
@@ -26,16 +31,16 @@ main();  // Calling main() after defining it is better than calling it before , 
 app.delete("/listings/:id",async(req,resp)=>{
     let {id}=req.params;
     const deleted=await Listing.findByIdAndDelete(id,{new:true});
-    console.log("DELETED LISTING: ",deleted);
+    // console.log("DELETED LISTING: ",deleted);
     resp.redirect("/listings");
 })
 
 // UPDATE ROUTE 
 app.put("/listings/:id",async(req,resp)=>{
     let {id}=req.params;
-    // console.log(req.body);
+    console.log("Request body: ",req.body);
     let updatedListing=req.body;
-    const updated= await Listing.findByIdAndUpdate(id,updatedListing);
+    const updated= await Listing.findByIdAndUpdate(id,updatedListing,{new:true});
     console.log("UPDATED DATA: ",updated);
     resp.redirect(`/listings/${id}`)
 })
@@ -44,7 +49,7 @@ app.put("/listings/:id",async(req,resp)=>{
 app.get("/listings/:id/edit",async(req,resp)=>{
     let {id}=req.params;
     let listingData=await Listing.findById(id);
-    // console.log("EDIT LISTING DATA: ",listingData);
+    console.log("EDIT LISTING DATA: ",listingData);
     resp.render("./listings/editListing.ejs",({listingData:listingData}));
 })
 
@@ -54,7 +59,7 @@ app.post("/listings", async (req,resp)=>{
     let listing=req.body;
     const newListing=new Listing(listing);
     const addedListing = await newListing.save();
-    console.log("New listing added: ",addedListing);
+    // console.log("New listing added: ",addedListing);
     resp.redirect("/listings");
 })
 
@@ -74,6 +79,7 @@ app.get("/listings/:id",async(req,resp)=>{
 // INDEX ROUTE
 app.get("/listings", async (req,resp)=>{
     let allListings=await Listing.find({});
+    // console.log(allListings);
     resp.render("./listings/index.ejs",{allListings:allListings});
 })
 

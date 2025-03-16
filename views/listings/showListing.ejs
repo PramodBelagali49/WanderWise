@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing</title>
-</head>
+<%- layout("/layouts/boilerplate.ejs") %>
 <body>
     <h2>Listing Details:</h2>
     <ul>
         <li><%= listingData.title %></li>    
         <li><%= listingData.description %></li>     
-        <li> &#8377; <%= listingData.price.toLocaleString("en-IN") %></li>   
+        <li> &#8377; <%= listingData.price.toLocaleString("en-IN") %> </li>   
         <li><%= listingData.location %></li>    
         <li><%= listingData.country %></li>  
     </ul>
@@ -25,6 +19,4 @@
             return confirm("Are you sure to delete the listing ? ");
         }
     </script>
-
 </body>
-</html>

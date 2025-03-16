@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Listing</title>
-</head>
+<%- layout("/layouts/boilerplate.ejs") %>
+
 <body>
     <h2>Enter details of new listing</h2>
+
     <form action="/listings" method="POST">
 
         Title: <input type="text" name="title" placeholder="Enter the title of the listing.."> <br> <br>
@@ -17,6 +13,6 @@
         Country: <input type="text" name="country" placeholder="Country of  the listing.."> <br> <br>
 
         <button>Submit</button>
+
     </form>
 </body>
-</html>
