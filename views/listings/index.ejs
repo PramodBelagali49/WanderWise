@@ -7,13 +7,12 @@
     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
         <% for(let listing of allListings) { %>
             <a href="/listings/<%=listing._id%>" class="listing-link">
-                <div class="card col">
+                
+              <div class="card col">
 
                     <!-- TO FIX HERE LISTING.IMAGE.URL OR LISTING.IMAGE ALONE-->
-                     
-                    <!-- <img src="<%= typeof listing.image === 'string' ? listing.image : listing.image.url %>" /> --> 
-                    <!-- <img src="<%= listing.image.url ? listing.image.url : listing.image %>" alt="Listing Image" /> -->  
-                    <img src="<%= listing.image && listing.image.url ? listing.image.url : listing.image ? listing.image : 'https://via.placeholder.com/150' %>" alt="Listing Image"
+
+                    <img src="<%= listing.image.url ? listing.image.url : listing.image %>" alt="Listing Image"
                         class="card-img-top" 
                         alt="listing_image" 
                         style="height: 20rem;"
@@ -24,7 +23,7 @@
                     <div class="card-body">
                       <p class="card-text">
                         <b> <%= listing.title %> </b> <br>
-                        &#8377; <%= listing.price.toLocaleString("en-IN") %> <br>
+                        &#8377; <%= listing.price.toLocaleString("en-IN") %>/night <br>
                       </p>
                     </div>
 

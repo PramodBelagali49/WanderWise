@@ -56,6 +56,8 @@ body {
     align-items: space-evenly;
 }
 
+
+/* IN the Index.ejs (for all listings) */
 /* CARD styling */
 .card{
     border: none !important;
@@ -85,5 +87,20 @@ body {
 .card-img-overlay:hover{
     opacity: 0.2;
     background-color: white;
+}
+
+/* SHOW-LISTING Styling */
+.show-img {
+    height: 50vh;
+    object-fit:auto !important;
+}
+
+.btns{
+    display: flex;
+}
+
+.show-card{
+    padding-left: 0;
+    padding-right: 0;
 }
 

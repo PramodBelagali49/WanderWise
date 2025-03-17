@@ -1,22 +1,42 @@
 <%- layout("/layouts/boilerplate.ejs") %>
 <body>
-    <h2>Listing Details:</h2>
-    <ul>
-        <li><%= listingData.title %></li>    
-        <li><%= listingData.description %></li>     
-        <li> &#8377; <%= listingData.price.toLocaleString("en-IN") %> </li>   
-        <li><%= listingData.location %></li>    
-        <li><%= listingData.country %></li>  
-    </ul>
+    <div class="row">
+        
+        <div class="col-8 offset-3 mt-3 mb-3">
+            <h2>Listing Details</h2>
+        </div>
+        
+        <div class="card col-6 offset-3 show-card mb-2">
+            <img src="<%= listingData.image.url ? listingData.image.url : listingData.image %>"
+                class="card-img-top show-img"
+                alt="listing_image"
+                style="object-fit: auto;"
+            />
+            <div class="card-body">
+                <p class="card-text"> 
+                    <b> <%= listingData.title %>  </b>      <br> 
+                    <i> <%= listingData.description %> </i>    <br> <br>
+                    &#8377; <%= listingData.price.toLocaleString("en-IN") %>/night  <br>
+                    <i class="fa-solid fa-location-dot"></i> <%= listingData.location %>    <br>
+                    <i class="fa-solid fa-globe"></i> <%= listingData.country %>  <br>
+                </p>
+            </div>
+        </div>
 
-    <a href="/listings/<%=listingData._id%>/edit">Edit the Listing</a>      <br> <br>
-    <form action="/listings/<%=listingData._id%>?_method=DELETE" method="POST" onsubmit="return confirmation()" >
-        <button type="submit">Delete the Listing</button>
-    </form>
+        <div class="btns mb-3">
+            <a href="/listings/<%=listingData._id%>/edit" class="btn btn-dark col-1 offset-3"> 
+                Edit
+            </a>
 
-    <script>
-        function confirmation(){
-            return confirm("Are you sure to delete the listing ? ");
-        }
-    </script>
+            <form action="/listings/<%=listingData._id%>?_method=DELETE" method="POST" onsubmit="return confirmation()" >
+                <button type="submit" class="btn btn-danger offset-5">Delete</button>
+            </form>
+        
+            <script>
+                function confirmation(){
+                    return confirm("Are you sure to delete the listing ? ");
+                }
+            </script>
+        </div>
+    </div>
 </body>

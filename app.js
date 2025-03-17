@@ -72,7 +72,7 @@ app.get("/listings/new",(req,resp)=>{
 app.get("/listings/:id",async(req,resp)=>{
     let {id}=req.params;
     let listingData=await Listing.findById(id);
-    // console.log(listingData);
+    console.log("SHOW LISTING DATA: ",listingData);
     resp.render("./listings/showListing.ejs",{listingData:listingData});
 })
 
