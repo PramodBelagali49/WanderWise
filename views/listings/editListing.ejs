@@ -8,37 +8,44 @@
 
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
-                    <input name="title" value="<%=listingData.title%>" class="form-control" type="text" required>
+                    <input name="listing[title]" value="<%=listingData.title%>" class="form-control" type="text" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <textarea  name="description" class="form-control" required> <%=listingData.description%> </textarea>
+                    <textarea  name="listing[description]" class="form-control" required> <%=listingData.description%> </textarea>
                 </div>
                 
                 <div class="mb-3">
                     <label for="image" class="form-label">Edit existing Image</label>
-                    <input name="image" class="form-control" type="text" placeholder="<%= listingData.image.url ? listingData.image.url : listingData.image %>">
+                    <!-- <input name="image" class="form-control" type="text" value="<%=listingData.image%>"> -->
+                    <!-- <input name="image" class="form-control" type="text" value="<%=listingData.image?.url||listingData.image||''%>"> -->
+                    <!-- <input name="image" class="form-control" type="text" value="<%=(listingData.image&&listingData.image.url)?listingData.image.url:(listingData.image||'')%>"> -->
 
-                    <p style="text-align: center; margin-bottom: 2px;">OR</p>   
-                    <input name="image" class="form-control" type="file">
+                    <input name="listing[image]" class="form-control" type="text" 
+                        value="<%=listingData.image.url ? listingData.image.url : Array.isArray(listingData.image) ? listingData.image[0] : listingData.image  %>">
+
+
+                    <!-- <p style="text-align: center; margin-bottom: 2px;">OR</p>
+                    <input name="image[filename]" class="form-control" type="file"> -->
                 </div>
+                
 
                 <div class="row">
                     <div class="mb-3 col-md-4">
                         <label for="price" class="form-label">Price</label>
-                        <input name="price" value="<%=listingData.price%>" class="form-control" type="number" required>
+                        <input name="listing[price]" value="<%=listingData.price%>" class="form-control" type="number" required>
                     </div>
 
                     <div class="mb-3 col-md-8">
                         <label for="country" class="form-label">Country</label>
-                        <input name="country" value="<%=listingData.country%>" class="form-control" type="text" required>
+                        <input name="listing[country]" value="<%=listingData.country%>" class="form-control" type="text" required>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="location" class="form-label">Location</label>
-                    <input name="location" value="<%=listingData.location%>" class="form-control" type="text" required>
+                    <input name="listing[location]" value="<%=listingData.location%>" class="form-control" type="text" required>
                 </div>
 
                 <button class="btn btn-primary mb-3 edit-btn">Submit</button>
