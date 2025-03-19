@@ -5,6 +5,10 @@ body {
     min-height: 100vh;
 }
 
+.conatiner{
+    flex:1; 
+}
+
 /* ICON styling */
 .fa-plane-departure{
     color: rgb(67, 120, 234);
@@ -95,6 +99,7 @@ body {
     object-fit:auto !important;
 }
 
+/* in showListing */
 .btns{
     display: flex;
 }
@@ -103,4 +108,3 @@ body {
     padding-left: 0;
     padding-right: 0;
 }
-

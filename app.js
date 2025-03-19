@@ -36,8 +36,9 @@ app.delete("/listings/:id",async(req,resp)=>{
 })
 
 // UPDATE ROUTE 
-app.put("/listings/:id",async(req,resp)=>{
+app.patch("/listings/:id",async(req,resp)=>{
     let {id}=req.params;
+    console.log("id received from edit page: ",id);
     console.log("Request body: ",req.body);
     let updatedListing=req.body;
     const updated= await Listing.findByIdAndUpdate(id,updatedListing,{new:true});
