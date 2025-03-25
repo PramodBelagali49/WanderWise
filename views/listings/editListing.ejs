@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-8 offset-2">
             <h2 class="mt-3 mb-3">Edit the Listing</h2>
-            <form action="/listings/<%=listingData._id%>?_method=PATCH" method="POST">
+            <form action="/listings/<%=listingData._id%>?_method=PATCH" method="POST" class="needs-validation">
 
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
@@ -13,17 +13,18 @@
 
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <textarea  name="listing[description]" class="form-control" required> <%=listingData.description%> </textarea>
+                    <textarea  name="listing[description]" class="form-control" required><%=listingData.description%></textarea>
                 </div>
                 
                 <div class="mb-3">
                     <label for="image" class="form-label">Edit existing Image</label>
-                    <!-- <input name="image" class="form-control" type="text" value="<%=listingData.image%>"> -->
-                    <!-- <input name="image" class="form-control" type="text" value="<%=listingData.image?.url||listingData.image||''%>"> -->
-                    <!-- <input name="image" class="form-control" type="text" value="<%=(listingData.image&&listingData.image.url)?listingData.image.url:(listingData.image||'')%>"> -->
+                    <!-- <input name="listing[image]" class="form-control" type="text" value="<%=listingData.image%>"> -->
+                    <!-- <input name="listing[image]" class="form-control" type="text" value="<%=listingData.image?.url||listingData.image%>"> -->
 
-                    <input name="listing[image]" class="form-control" type="text" 
-                        value="<%=listingData.image.url ? listingData.image.url : Array.isArray(listingData.image) ? listingData.image[0] : listingData.image  %>">
+                    <input name="listing[image]" class="form-control" type="text" value="<%=(listingData.image.url)?listingData.image.url:listingData.image%>" required>
+
+                    <!-- <input name="listing[image]" class="form-control" type="text" 
+                        value="<%=listingData.image.url ? listingData.image.url : Array.isArray(listingData.image) ? listingData.image[0] : listingData.image  %>"> -->
 
 
                     <!-- <p style="text-align: center; margin-bottom: 2px;">OR</p>
@@ -52,7 +53,9 @@
             </form>
         </div>
     </div>
+    <script src="../../public/js/script.js"></script>
 </body>
+
 
 
 <!-- Title: <input type="text" name="title" value="<%=listingData.title%>" placeholder="<%=listingData.title%>"> <br> <br>
