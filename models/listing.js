@@ -8,9 +8,11 @@ const listingSchema= new Schema({
     },
     description:{
         type:String,
+        maxlength:40  // added lately
     },
     price:{
         type:Number,
+        min:0   // added lately
     },
     image: {
         filename : String,
