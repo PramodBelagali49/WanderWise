@@ -64,12 +64,14 @@ app.get("/listings/:id/edit",wrapAsync(async(req,resp)=>{
 
 // CREATE NEW LISTING ROUTE 
 app.post("/listings", wrapAsync(async (req,resp,next)=>{
+
+
     // console.log(req.body);
 
     let result=listingSchema.validate(req.body);                   // SERVER SIDE VALIDATION USING JOI PACKAGE
     // console.log(result.error)
     if(result.error){
-        throw new ExpressError(400,result.error);
+        throw new ExpressError(400,result.error); 
     }
 
     let listing=req.body;
