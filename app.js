@@ -21,6 +21,8 @@ app.engine("ejs",ejsMate);
 
 const listingSchema=require("./schema.js/joiListingSchema.js");
 
+const Review = require("./models/review.js");
+
 async function  main(){
     try{
         await mongoose.connect("mongodb://127.0.0.1:27017/WanderWise");
@@ -32,7 +34,7 @@ async function  main(){
 main();  // Calling main() after defining it is better than calling it before , although it works fine
 
 
-// DELETE ROUTE     (btn in showListing.ejs)
+// DELETE ROUTE     (btn in showListing.ejs) 
 app.delete("/listings/:id",wrapAsync(async(req,resp)=>{
     let {id}=req.params;
     const deleted=await Listing.findByIdAndDelete(id,{new:true});
@@ -64,8 +66,6 @@ app.get("/listings/:id/edit",wrapAsync(async(req,resp)=>{
 
 // CREATE NEW LISTING ROUTE 
 app.post("/listings", wrapAsync(async (req,resp,next)=>{
-
-
     // console.log(req.body);
 
     let result=listingSchema.validate(req.body);                   // SERVER SIDE VALIDATION USING JOI PACKAGE
@@ -100,6 +100,26 @@ app.get("/listings", wrapAsync(async (req,resp)=>{
     // console.log(allListings);
     resp.render("./listings/index.ejs",{allListings:allListings});
 }))
+
+// Reviews Post Route
+app.post("/listings/:id/reviews",async(req,resp)=>{
+    let {id}=req.params;
+            // OR 
+    // let id=req.params.id;
+
+    // console.log("review id: ",id);
+    let listing=await Listing.findById(id);
+
+    // console.log("listing data from review ",listing);
+    // console.log("review req body ",req.body);
+
+    let newReview=new Review(req.body.review);
+    listing.reviews.push(newReview);
+
+    await newReview.save();
+    let res=await listing.save();
+    resp.redirect(`/listings/${id}`);
+})
 
 app.get("/",(req,resp)=>{
     resp.send("Welcome to home page bhai");
