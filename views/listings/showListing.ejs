@@ -3,7 +3,7 @@
     <div class="row">
         
         <div class="col-8 offset-3 mt-3 mb-3">
-            <h2>Listing Details</h2>
+             <h2> <%= listingData.title %> </h2>
         </div>
         
         <div class="card col-6 offset-3 show-card mb-2">
@@ -14,7 +14,6 @@
             />
             <div class="card-body">
                 <p class="card-text"> 
-                    <b> <%= listingData.title %>  </b>      <br> 
                     <i> <%= listingData.description %> </i>    <br> <br>
                     &#8377; <%= listingData.price.toLocaleString("en-IN") %>/night  <br>
                     <i class="fa-solid fa-location-dot"></i> <%= listingData.location %>    <br>
@@ -31,12 +30,29 @@
             <form action="/listings/<%=listingData._id%>?_method=DELETE" method="POST" onsubmit="return confirmation()" >
                 <button type="submit" class="btn btn-danger offset-5">Delete</button>
             </form>
-        
             <script>
                 function confirmation(){
                     return confirm("Are you sure to delete the listing ? ");
                 }
             </script>
+        </div>
+
+        <div class="col-8 offset-3 mt-3 mb-3">
+            <hr>
+            <h3>Leave a review</h3>
+            <form action="">
+                <div class="mb-3 mt-3">
+                    <label for="rating" class="form-label">Rating</label>
+                    <input type="range" name="review[rating]" id="rating" min="1" max="5" class="form-range">
+                </div>
+
+                <div class="mb-3 mt-3">
+                    <label for="comment" class="form-label">Comment</label>
+                    <textarea name="review[comment]" id="comment" rows="5" cols="30" class="form-control"></textarea>
+                </div>
+                <!-- <br> -->
+                <button class="btn btn-outline-dark">Submit</button>
+            </form>
         </div>
     </div>
 </body>
