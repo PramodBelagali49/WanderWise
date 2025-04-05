@@ -19,20 +19,44 @@ app.use(express.static(path.join(__dirname,"/public")));
 const ejsMate=require("ejs-mate");
 app.engine("ejs",ejsMate);
 
-const listingSchema=require("./schema.js/joiListingSchema.js");
+// const listingSchema=require("./schema.js/joiListingSchema.js");
+const {listingSchema,reviewSchema}=require("./Joi_Schema.js")
 
 const Review = require("./models/review.js");
 
 async function  main(){
     try{
         await mongoose.connect("mongodb://127.0.0.1:27017/WanderWise");
-        console.log("Connection to MongoDB Succesful");
+        console.log("Connection to MongoDB Successful");
     }catch(err){
         console.log("Some error occured while connecting to db",err);
     }
 }
 main();  // Calling main() after defining it is better than calling it before , although it works fine
 
+
+
+// SERVER SIDE VALIDATION FOR LISTING
+const validateListing=(req,resp,next)=>{
+    let {error} = listingSchema.validate(req.body);
+    if(error){
+        let errMsg=error.details.map((el)=>el.message).join(",");
+        throw new ExpressError(400,errMsg);
+    }else{
+        next();
+    }
+}
+
+// SERVER SIDE VALIDATION FOR REVIEW
+const validateReview=(req,res,next)=>{
+    let {error} = reviewSchema.validate(req.body);
+    if(error){
+        let errMsg=error.details.map((el)=>el.message).join(",");
+        throw new ExpressError(400,errMsg);
+    }else{
+        next();
+    }
+}
 
 // DELETE ROUTE     (btn in showListing.ejs) 
 app.delete("/listings/:id",wrapAsync(async(req,resp)=>{
@@ -65,7 +89,7 @@ app.get("/listings/:id/edit",wrapAsync(async(req,resp)=>{
 }))
 
 // CREATE NEW LISTING ROUTE 
-app.post("/listings", wrapAsync(async (req,resp,next)=>{
+app.post("/listings", validateListing , wrapAsync(async (req,resp,next)=>{   // validateListing as middleware for server side validation
     // console.log(req.body);
 
     let result=listingSchema.validate(req.body);                   // SERVER SIDE VALIDATION USING JOI PACKAGE
@@ -89,7 +113,7 @@ app.get("/listings/new",(req,resp)=>{
 // SHOW ROUTE 
 app.get("/listings/:id",wrapAsync(async(req,resp)=>{
     let {id}=req.params;
-    let listingData=await Listing.findById(id);
+    let listingData=await Listing.findById(id).populate("reviews");  // populate to get details of the reviews
     console.log("SHOW LISTING DATA: ",listingData);
     resp.render("./listings/showListing.ejs",{listingData:listingData});
 }))
@@ -101,25 +125,24 @@ app.get("/listings", wrapAsync(async (req,resp)=>{
     resp.render("./listings/index.ejs",{allListings:allListings});
 }))
 
-// Reviews Post Route
-app.post("/listings/:id/reviews",async(req,resp)=>{
+// REVIEW POST ROUTE
+app.post("/listings/:id/reviews", validateReview , wrapAsync(async(req,resp)=>{    // vallidateReview as middleware for server side validation
     let {id}=req.params;
             // OR 
     // let id=req.params.id;
 
     // console.log("review id: ",id);
     let listing=await Listing.findById(id);
-
     // console.log("listing data from review ",listing);
     // console.log("review req body ",req.body);
-
     let newReview=new Review(req.body.review);
     listing.reviews.push(newReview);
 
-    await newReview.save();
-    let res=await listing.save();
+    let res=await newReview.save();
+    console.log("New review: ",res);
+    await listing.save();
     resp.redirect(`/listings/${id}`);
-})
+}))
 
 app.get("/",(req,resp)=>{
     resp.send("Welcome to home page bhai");

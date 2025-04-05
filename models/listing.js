@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { type } = require("../schema.js/joiListingSchema");
+const { type } = require("../Joi_Schema");
 const { ref } = require("joi");
 const Schema = mongoose.Schema;
 
@@ -10,7 +10,7 @@ const listingSchema= new Schema({
     },
     description:{
         type:String,
-        maxlength:40  // added lately
+        maxlength:149  // added lately
     },
     price:{
         type:Number,
