@@ -108,3 +108,8 @@ body {
     padding-left: 0;
     padding-right: 0;
 }
+
+/* Review Card */
+.cardReview{
+    border: 1px solid black !important;
+}
