@@ -144,6 +144,17 @@ app.post("/listings/:id/reviews", validateReview , wrapAsync(async(req,resp)=>{ 
     resp.redirect(`/listings/${id}`);
 }))
 
+// REVIEW DELETE ROUTE
+app.delete("/listings/:id/reviews/:reviewId",wrapAsync(async(req,resp)=>{
+    let {id,reviewId}=req.params;
+
+    let res1=await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});  // pull operator to delete a review from reviews array
+    let res2=await Review.findByIdAndDelete(reviewId);
+
+    console.log("Review deleted: ",res1,res2);
+    resp.redirect(`/listings/${id}`);
+}))
+
 app.get("/",(req,resp)=>{
     resp.send("Welcome to home page bhai");
 })
