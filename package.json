@@ -10,6 +10,7 @@
   "author": "Pramod_b2",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.7",
     "ejs-mate": "^4.0.0",
     "joi": "^17.13.3",
     "method-override": "^3.0.0"
