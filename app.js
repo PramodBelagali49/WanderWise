@@ -25,18 +25,6 @@ async function  main(){
 }
 main();  // Calling main() after defining it is better than calling it before , although it works fine
 
-// Listings related all routes imported from listingsRoutes.js file
-const listingroutes=require("./routes/listingsRoutes.js")
-app.use("/listings",listingroutes);
-
-// Reviews related all routes imported from reviewsRoutes.js file
-const revroutes=require("./routes/reviewsRoutes.js")
-app.use("/listings/:id/reviews",revroutes);
-
-app.get("/",(req,resp)=>{
-    resp.send("Welcome to home page bhai");
-})
-
 
 // COOKIES
 // requiring cookie-parser npm package
@@ -67,29 +55,71 @@ app.get("/getCookies",(req,resp)=>{
 })
 */
 
-// SESSION
+// SESSIONS
 const session=require("express-session");
+const flash=require("connect-flash");
 const sessionOptions={
     secret:"##$secretcode$**",
     resave:false,
-    saveUninitialized:true
+    saveUninitialized:true,
+    cookie:{
+        expires: Date.now() + 7*24*60*60*1000 ,
+        maxAge: 7*24*60*60*1000,
+        httpOnly: true
+    }
 };
-
 app.use(session(sessionOptions));
+app.use(flash());
 
+// Learning about Sessions
+/*
 app.get("/register",(req,resp)=>{
     let {name="Anon"}=req.query;
-    console.log(req.session);
+    // console.log(req.session);
     req.session.name=name;
-    console.log(req.session);
+    // console.log(req.session);
+    if(name==="Anon"){
+        req.flash("error","User NOT registered");
+    }else{
+        req.flash("success","User registered successfully !!");
+    }
     resp.redirect("/hello");
 })
-
+app.use((req,resp,next)=>{
+    resp.locals.successMsg=req.flash("success");    
+    resp.locals.errorMsg=req.flash("error");
+    next();
+})
 app.use("/hello",(req,resp)=>{
-    console.log("req.session(inside greet path): ",req.session);
-    resp.send(`Hello , ${req.session.name} !!`);
+    // console.log("req.session(inside greet path): ",req.session);
+    // resp.locals.successMsg=req.flash("success");    // you can place both these lines in a middleware to reduce bulkiness
+    // resp.locals.errorMsg=req.flash("error");
+    resp.render("flash.ejs",{name: req.session.name});
+    // resp.send(`Hello , ${req.session.name} !!`);
+})
+*/
+
+// SESSION IMPLEMENTATION IN THE PROJECT
+app.use((req,resp,next)=>{
+    resp.locals.successMsg=req.flash("success");
+    // console.log(resp.locals.successMsg);  // to show that success/error is an array can be of length 0
+    resp.locals.errorMsg=req.flash("error");
+    next();
 })
 
+
+ 
+// Listings related all routes imported from listingsRoutes.js file
+const listingroutes=require("./routes/listingsRoutes.js")
+app.use("/listings",listingroutes);
+
+// Reviews related all routes imported from reviewsRoutes.js file
+const revroutes=require("./routes/reviewsRoutes.js")
+app.use("/listings/:id/reviews",revroutes);
+
+app.get("/",(req,resp)=>{
+    resp.send("Welcome to home page bhai");
+})
 
 app.all("*",(req,resp,next)=>{
     next(new ExpressError(404,"PaGe NoT FoUnD"));

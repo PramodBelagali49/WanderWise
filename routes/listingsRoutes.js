@@ -22,6 +22,8 @@ router.delete("/:id",wrapAsync(async(req,resp)=>{
     let {id}=req.params;
     const deleted=await Listing.findByIdAndDelete(id,{new:true});
     // console.log("DELETED LISTING: ",deleted);
+
+    req.flash("success","Listing deleted !!");
     resp.redirect("/listings");
 }))
 
@@ -32,19 +34,26 @@ router.patch("/:id",wrapAsync(async(req,resp)=>{
     }
     let {id}=req.params;
     console.log("id received from edit page: ",id);
-    console.log("Request body: ",req.body);
+    // console.log("Request body: ",req.body);
     let updatedListing={...req.body.listing};
     const updated= await Listing.findByIdAndUpdate(id,updatedListing,{new:true});
     console.log("UPDATED DATA: ",updated);
-    resp.redirect(`/listings/${id}`)
+    req.flash("success","Listing Updated !");
+    resp.redirect(`/listings/${id}`);
 }))
 
 // EDIT ROUTE     (btn in showListing.ejs)
 router.get("/:id/edit",wrapAsync(async(req,resp)=>{
     let {id}=req.params;
     let listingData=await Listing.findById(id);
-    console.log("EDIT LISTING DATA: ",listingData);
-    resp.render("./listings/editListing.ejs",({listingData:listingData}));
+
+    if(!listingData){
+        req.flash("error","Requested listing does not exist");
+        resp.redirect("/listings");
+    }else{
+        console.log("EDIT LISTING DATA: ",listingData);
+        resp.render("./listings/editListing.ejs",({listingData:listingData}));
+    }
 }))
 
 // CREATE NEW LISTING ROUTE 
@@ -61,6 +70,8 @@ router.post("/", validateListing , wrapAsync(async (req,resp,next)=>{   // valid
     const newListing=new Listing(listing);
     const addedListing = await newListing.save();
     // console.log("New listing added: ",addedListing);
+
+    req.flash("success","New Listing Added!!");
     resp.redirect("/listings");
 }))
 
@@ -73,8 +84,14 @@ router.get("/new",(req,resp)=>{
 router.get("/:id",wrapAsync(async(req,resp)=>{
     let {id}=req.params;
     let listingData=await Listing.findById(id).populate("reviews");  // populate to get details of the reviews
-    console.log("SHOW LISTING DATA: ",listingData);
-    resp.render("./listings/showListing.ejs",{listingData:listingData});
+
+    if(!listingData){
+        req.flash("error","Requested listing does not exist");
+        resp.redirect("/listings");
+    }else{
+        console.log("SHOW LISTING DATA: ",listingData);
+        resp.render("./listings/showListing.ejs",{listingData:listingData});
+    }
 }))
 
 // INDEX ROUTE
