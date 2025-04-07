@@ -40,6 +40,7 @@ app.get("/",(req,resp)=>{
 
 // COOKIES
 // requiring cookie-parser npm package
+/*
 const cookieParser=require("cookie-parser");
 app.use(cookieParser("**##secretkey##**"));
 
@@ -63,6 +64,30 @@ app.get("/verify",(req,resp)=>{
 app.get("/getCookies",(req,resp)=>{
     let {name}=req.cookies;
     resp.send(`<h1>Hello ${name} !!</h1`);
+})
+*/
+
+// SESSION
+const session=require("express-session");
+const sessionOptions={
+    secret:"##$secretcode$**",
+    resave:false,
+    saveUninitialized:true
+};
+
+app.use(session(sessionOptions));
+
+app.get("/register",(req,resp)=>{
+    let {name="Anon"}=req.query;
+    console.log(req.session);
+    req.session.name=name;
+    console.log(req.session);
+    resp.redirect("/hello");
+})
+
+app.use("/hello",(req,resp)=>{
+    console.log("req.session(inside greet path): ",req.session);
+    resp.send(`Hello , ${req.session.name} !!`);
 })
 
 
