@@ -15,6 +15,11 @@ app.use(express.static(path.join(__dirname,"/public")));
 const ejsMate=require("ejs-mate");
 app.engine("ejs",ejsMate);
 
+// for authentication using passport
+const passport=require("passport");
+const LocalStrategy=require("passport-local");
+const User=require("./models/user.js");
+
 async function  main(){
     try{
         await mongoose.connect("mongodb://127.0.0.1:27017/WanderWise");
@@ -98,7 +103,6 @@ app.use("/hello",(req,resp)=>{
     // resp.send(`Hello , ${req.session.name} !!`);
 })
 */
-
 // SESSION IMPLEMENTATION IN THE PROJECT
 app.use((req,resp,next)=>{
     resp.locals.successMsg=req.flash("success");
@@ -106,6 +110,26 @@ app.use((req,resp,next)=>{
     resp.locals.errorMsg=req.flash("error");
     next();
 })
+
+// session must be created along with passport initialization always
+// app.use(session(sessionOptions));     // it's already there above
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.get("/demoUser" , async(req,resp)=>{
+    let fakeUser=new User({
+        email:"xyz@gmail.com",
+        username:"xyz"
+    });
+    let regtrd=await User.register(fakeUser,"xyz");
+    resp.send(regtrd);
+});
+
+
 
 
  
