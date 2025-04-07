@@ -120,16 +120,14 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.get("/demoUser" , async(req,resp)=>{
-    let fakeUser=new User({
-        email:"xyz@gmail.com",
-        username:"xyz"
-    });
-    let regtrd=await User.register(fakeUser,"xyz");
-    resp.send(regtrd);
-});
-
-
+// app.get("/demoUser" , async(req,resp)=>{
+//     let fakeUser=new User({
+//         email:"xyz@gmail.com",
+//         username:"xyz"
+//     });
+//     let regtrd=await User.register(fakeUser,"xyz");
+//     resp.send(regtrd);
+// });
 
 
  
@@ -140,6 +138,10 @@ app.use("/listings",listingroutes);
 // Reviews related all routes imported from reviewsRoutes.js file
 const revroutes=require("./routes/reviewsRoutes.js")
 app.use("/listings/:id/reviews",revroutes);
+
+// Users related routes form signup and login
+const userRoutes=require("./routes/usersRoutes.js")
+app.use("/",userRoutes);
 
 app.get("/",(req,resp)=>{
     resp.send("Welcome to home page bhai");
