@@ -11,7 +11,7 @@ const listingSchema= new Schema({
     },
     description:{
         type:String,
-        maxlength:149  // added lately
+        // you can give min and max length for description
     },
     price:{
         type:Number,

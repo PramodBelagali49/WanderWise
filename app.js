@@ -61,6 +61,7 @@ app.get("/getCookies",(req,resp)=>{
 */
 
 // SESSIONS
+
 const session=require("express-session");
 const flash=require("connect-flash");
 const sessionOptions={
@@ -103,13 +104,11 @@ app.use("/hello",(req,resp)=>{
     // resp.send(`Hello , ${req.session.name} !!`);
 })
 */
+
+
+
 // SESSION IMPLEMENTATION IN THE PROJECT
-app.use((req,resp,next)=>{
-    resp.locals.successMsg=req.flash("success");
-    // console.log(resp.locals.successMsg);  // to show that success/error is an array can be of length 0
-    resp.locals.errorMsg=req.flash("error");
-    next();
-})
+
 
 // session must be created along with passport initialization always
 // app.use(session(sessionOptions));     // it's already there above
@@ -120,6 +119,16 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+/* middleware for resp.locals variables to be accessible in EJS files */
+app.use((req,resp,next)=>{
+    resp.locals.successMsg=req.flash("success");
+    // console.log(resp.locals.successMsg);  // to show that success/error is an array can be of length 0
+    resp.locals.errorMsg=req.flash("error");
+    // console.log("req.user(in app.js):",req.user);
+    resp.locals.currUser=req.user;
+    console.log(resp.locals);
+    next();
+})
 // app.get("/demoUser" , async(req,resp)=>{
 //     let fakeUser=new User({
 //         email:"xyz@gmail.com",
@@ -128,7 +137,6 @@ passport.deserializeUser(User.deserializeUser());
 //     let regtrd=await User.register(fakeUser,"xyz");
 //     resp.send(regtrd);
 // });
-
 
  
 // Listings related all routes imported from listingsRoutes.js file

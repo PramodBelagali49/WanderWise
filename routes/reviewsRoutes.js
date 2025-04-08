@@ -16,7 +16,7 @@ const validateReview=(req,res,next)=>{
     }
 }
 
-// REVIEW POST ROUTE
+// REVIEWS POST ROUTE
 router.post("/", validateReview , wrapAsync(async(req,resp)=>{    // vallidateReview as middleware for server side validation
     let {id}=req.params;    // here the id from req.params is being fetched from parent route for reviews in app.js ( bcz of {mergeParams:true} )
             // OR 
@@ -37,7 +37,7 @@ router.post("/", validateReview , wrapAsync(async(req,resp)=>{    // vallidateRe
     resp.redirect(`/listings/${id}`);
 }))
 
-// REVIEW DELETE ROUTE
+// REVIEWS DELETE ROUTE
 router.delete("/:reviewId",wrapAsync(async(req,resp)=>{
     let {id,reviewId}=req.params;
 
