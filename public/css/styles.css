@@ -24,6 +24,10 @@ body {
     background-color: #f7f6f6;
     border-radius: 1.1rem;
 }
+#navbarNav{
+    margin-block-start: auto !;
+}
+
 /* FOOTER styling */
 .f-info-links a {
     text-decoration: none;

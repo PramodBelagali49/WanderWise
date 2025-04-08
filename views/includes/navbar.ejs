@@ -22,7 +22,24 @@
               </li>
             </ul>
 
+            <ul class="navbar-nav ms-auto">
+              <!-- currUser from resp.locals.currUser=req.user in app.js middleware -->
+              <% if (!currUser) { %>
+                  <li class="nav-item">
+                    <a class="nav-link" aria-current="signup" href="/signup">SignUp</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                  </li>
+              <% }%>
+              <% if (currUser) { %>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                  </li>
+              <% } %>
+            </ul>
           </div>
+
         </div>
       </nav>
 </body>
