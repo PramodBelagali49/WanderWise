@@ -126,7 +126,7 @@ app.use((req,resp,next)=>{
     resp.locals.errorMsg=req.flash("error");
     // console.log("req.user(in app.js):",req.user);
     resp.locals.currUser=req.user;
-    console.log(resp.locals);
+    // console.log(resp.locals);
     next();
 })
 // app.get("/demoUser" , async(req,resp)=>{

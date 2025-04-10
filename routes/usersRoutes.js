@@ -2,6 +2,7 @@ const express=require("express");
 const User = require("../models/user");
 const wrapAsync = require("../utils/wrapAsync");
 const passport = require("passport");
+const { saveRedirectUrl } = require("../middlewares");
 const router=express.Router();
 
 router.get("/signup",(req,resp)=>{
@@ -35,10 +36,15 @@ router.get("/login",(req,resp)=>{
     resp.render("users/loginForm.ejs");
 })
 
-router.post("/login" , passport.authenticate("local",{failureRedirect:"/login" , failureFlash:true}) , async(req,resp)=>{
+router.post("/login" , saveRedirectUrl , passport.authenticate("local",{failureRedirect:"/login" , failureFlash:true}) , async(req,resp)=>{
     // console.log("req.user(in usersRoutes.js) after login: ",req.user);
     req.flash("success","Welcome back to WanderWise");
-    resp.redirect("/listings");
+    // console.log(resp.locals.redirectUrl);
+    if(resp.locals.redirectUrl){
+        resp.redirect(resp.locals.redirectUrl);
+    }else{
+        resp.redirect("/listings");
+    }
 })
 
 router.get("/logout",(req,resp,next)=>{

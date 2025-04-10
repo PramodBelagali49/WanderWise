@@ -4,7 +4,7 @@ const wrapAsync=require("../utils/wrapAsync.js");
 const ExpressError=require("../utils/ExpressError.js");
 const Listing=require("../models/listing.js");
 const {listingSchema}=require("../Joi_Schema.js");
-const { isLoggedIn } = require("../middlewareLoggedIn.js");
+const { isLoggedIn, isOwner } = require("../middlewares.js");
 
 
 // SERVER SIDE VALIDATION FOR LISTING
@@ -19,7 +19,7 @@ const validateListing=(req,resp,next)=>{
 }
 
 // DELETE ROUTE     (btn in showListing.ejs) 
-router.delete("/:id", isLoggedIn , wrapAsync(async(req,resp)=>{
+router.delete("/:id", isLoggedIn , isOwner , wrapAsync(async(req,resp)=>{
     let {id}=req.params;
     const deleted=await Listing.findByIdAndDelete(id,{new:true});
     // console.log("DELETED LISTING: ",deleted);
@@ -29,22 +29,22 @@ router.delete("/:id", isLoggedIn , wrapAsync(async(req,resp)=>{
 }))
 
 // UPDATE ROUTE 
-router.patch("/:id" , isLoggedIn , wrapAsync(async(req,resp)=>{
+router.patch("/:id" , isLoggedIn , isOwner , wrapAsync(async(req,resp)=>{
     if(!req.body.listing){
         throw new ExpressError(400,"Invalid data for listing");
     }
     let {id}=req.params;
     // console.log("id received from edit page: ",id);
-    // console.log("Request body: ",req.body);
+    console.log("Request body: ",req.body);
     let updatedListing={...req.body.listing};
     const updated= await Listing.findByIdAndUpdate(id,updatedListing,{new:true});
-    // console.log("UPDATED DATA: ",updated);
+    console.log("UPDATED DATA: ",updated);
     req.flash("success","Listing Updated !");
     resp.redirect(`/listings/${id}`);
 }))
 
 // EDIT ROUTE     (btn in showListing.ejs)
-router.get("/:id/edit" , isLoggedIn , wrapAsync(async(req,resp)=>{
+router.get("/:id/edit" , isLoggedIn , isOwner , wrapAsync(async(req,resp)=>{
     let {id}=req.params;
     let listingData=await Listing.findById(id);
 
@@ -52,7 +52,7 @@ router.get("/:id/edit" , isLoggedIn , wrapAsync(async(req,resp)=>{
         req.flash("error","Requested listing does not exist");
         resp.redirect("/listings");
     }else{
-        // console.log("EDIT LISTING DATA: ",listingData);
+        console.log("EDIT LISTING DATA: ",listingData);
         resp.render("./listings/editListing.ejs",({listingData:listingData}));
     }
 }))
@@ -69,8 +69,10 @@ router.post("/", validateListing , isLoggedIn , wrapAsync(async (req,resp,next)=
 
     let listing=req.body;
     const newListing=new Listing(listing);
+    // console.log(newListing);
+    newListing.owner=req.user._id;
     const addedListing = await newListing.save();
-    // console.log("New listing added: ",addedListing);
+    console.log("New listing added: ",addedListing);
 
     req.flash("success","New Listing Added!!");
     resp.redirect("/listings");
@@ -84,8 +86,10 @@ router.get("/new" , isLoggedIn , (req,resp)=>{
 // SHOW ROUTE 
 router.get("/:id",wrapAsync(async(req,resp)=>{
     let {id}=req.params;
-    let listingData=await Listing.findById(id).populate("reviews");  // populate to get details of the reviews
-
+    let listingData=await Listing.findById(id)
+                .populate("reviews")        // populate to get details of the reviews
+                .populate("owner")
+    console.log("listingData in showListing: ",listingData);
     if(!listingData){
         req.flash("error","Requested listing does not exist");
         resp.redirect("/listings");
