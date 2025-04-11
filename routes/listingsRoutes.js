@@ -59,7 +59,7 @@ router.get("/:id/edit" , isLoggedIn , isOwner , wrapAsync(async(req,resp)=>{
 
 // CREATE NEW LISTING ROUTE 
 router.post("/", validateListing , isLoggedIn , wrapAsync(async (req,resp,next)=>{   // validateListing as middleware for server side validation
-    // console.log(req.body);
+    console.log("req.body:(in new listing route)",req.body);
 
     let result=listingSchema.validate(req.body);                   // SERVER SIDE VALIDATION USING JOI PACKAGE
     // console.log(result.error)
@@ -69,10 +69,11 @@ router.post("/", validateListing , isLoggedIn , wrapAsync(async (req,resp,next)=
 
     let listing=req.body;
     const newListing=new Listing(listing);
-    // console.log(newListing);
+    console.log("newListing object before saving: ",newListing);
     newListing.owner=req.user._id;
     const addedListing = await newListing.save();
-    console.log("New listing added: ",addedListing);
+    console.log("addedListing object after saving: ",addedListing);
+    // console.log("New listing added: ",addedListing);
 
     req.flash("success","New Listing Added!!");
     resp.redirect("/listings");
@@ -87,7 +88,12 @@ router.get("/new" , isLoggedIn , (req,resp)=>{
 router.get("/:id",wrapAsync(async(req,resp)=>{
     let {id}=req.params;
     let listingData=await Listing.findById(id)
-                .populate("reviews")        // populate to get details of the reviews
+                .populate({
+                    path:"reviews",
+                    populate:{
+                        path:"author"
+                    }
+                })        // populate to get details of the reviews
                 .populate("owner")
     console.log("listingData in showListing: ",listingData);
     if(!listingData){
