@@ -1,5 +1,7 @@
+const { listingSchema, reviewSchema } = require("./Joi_Schema");
 const Listing = require("./models/listing");
 const Review = require("./models/review");
+const ExpressError = require("./utils/ExpressError");
 
 module.exports.isLoggedIn=(req,resp,next)=>{
     // console.log("req.user(in middleware.js): " , req.user);
@@ -39,3 +41,27 @@ module.exports.isAuthor = async(req,resp,next)=>{
     }
     next();
 }
+
+
+// SERVER SIDE VALIDATION FOR LISTING
+module.exports.validateListing=(req,resp,next)=>{
+    let {error} = listingSchema.validate(req.body);
+    if(error){
+        let errMsg=error.details.map((el)=>el.message).join(",");
+        throw new ExpressError(400,errMsg);
+    }else{
+        next();
+    }
+};
+
+
+// SERVER SIDE VALIDATION FOR REVIEW
+module.exports.validateReview=(req,res,next)=>{
+    let {error} = reviewSchema.validate(req.body);
+    if(error){
+        let errMsg=error.details.map((el)=>el.message).join(",");
+        throw new ExpressError(400,errMsg);
+    }else{
+        next();
+    }
+};
