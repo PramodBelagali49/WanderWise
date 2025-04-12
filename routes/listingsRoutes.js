@@ -1,83 +1,24 @@
 const express=require("express");
 const router=express.Router();
 const wrapAsync=require("../utils/wrapAsync.js");
-const ExpressError=require("../utils/ExpressError.js");
-const Listing=require("../models/listing.js");
-const {listingSchema}=require("../Joi_Schema.js");
-const { isLoggedIn, isOwner } = require("../middlewares.js");
+// const ExpressError=require("../utils/ExpressError.js");
+// const Listing=require("../models/listing.js");
+// const {listingSchema}=require("../Joi_Schema.js");
+const { isLoggedIn, isOwner, validateListing } = require("../middlewares.js");
+const { showListingCtrlr, newListingCtrlr, editListingFormCtrlr, updateListingCtrlr, deleteListingCtrlr, indexListingsCtrlr } = require("../controllers/listingCtrlrs.js");
 
-
-// SERVER SIDE VALIDATION FOR LISTING
-const validateListing=(req,resp,next)=>{
-    let {error} = listingSchema.validate(req.body);
-    if(error){
-        let errMsg=error.details.map((el)=>el.message).join(",");
-        throw new ExpressError(400,errMsg);
-    }else{
-        next();
-    }
-}
 
 // DELETE ROUTE     (btn in showListing.ejs) 
-router.delete("/:id", isLoggedIn , isOwner , wrapAsync(async(req,resp)=>{
-    let {id}=req.params;
-    const deleted=await Listing.findByIdAndDelete(id,{new:true});
-    // console.log("DELETED LISTING: ",deleted);
-
-    req.flash("success","Listing deleted !!");
-    resp.redirect("/listings");
-}))
+router.delete("/:id", isLoggedIn , isOwner , wrapAsync(deleteListingCtrlr));
 
 // UPDATE ROUTE 
-router.patch("/:id" , isLoggedIn , isOwner , wrapAsync(async(req,resp)=>{
-    if(!req.body.listing){
-        throw new ExpressError(400,"Invalid data for listing");
-    }
-    let {id}=req.params;
-    // console.log("id received from edit page: ",id);
-    console.log("Request body: ",req.body);
-    let updatedListing={...req.body.listing};
-    const updated= await Listing.findByIdAndUpdate(id,updatedListing,{new:true});
-    console.log("UPDATED DATA: ",updated);
-    req.flash("success","Listing Updated !");
-    resp.redirect(`/listings/${id}`);
-}))
+router.patch("/:id" , isLoggedIn , isOwner , wrapAsync(updateListingCtrlr));
 
 // EDIT ROUTE     (btn in showListing.ejs)
-router.get("/:id/edit" , isLoggedIn , isOwner , wrapAsync(async(req,resp)=>{
-    let {id}=req.params;
-    let listingData=await Listing.findById(id);
-
-    if(!listingData){
-        req.flash("error","Requested listing does not exist");
-        resp.redirect("/listings");
-    }else{
-        console.log("EDIT LISTING DATA: ",listingData);
-        resp.render("./listings/editListing.ejs",({listingData:listingData}));
-    }
-}))
+router.get("/:id/edit" , isLoggedIn , isOwner , wrapAsync(editListingFormCtrlr));
 
 // CREATE NEW LISTING ROUTE 
-router.post("/", validateListing , isLoggedIn , wrapAsync(async (req,resp,next)=>{   // validateListing as middleware for server side validation
-    console.log("req.body:(in new listing route)",req.body);
-
-    let result=listingSchema.validate(req.body);                   // SERVER SIDE VALIDATION USING JOI PACKAGE
-    // console.log(result.error)
-    if(result.error){
-        throw new ExpressError(400,result.error); 
-    }
-
-    let listing=req.body;
-    const newListing=new Listing(listing);
-    console.log("newListing object before saving: ",newListing);
-    newListing.owner=req.user._id;
-    const addedListing = await newListing.save();
-    console.log("addedListing object after saving: ",addedListing);
-    // console.log("New listing added: ",addedListing);
-
-    req.flash("success","New Listing Added!!");
-    resp.redirect("/listings");
-}))
+router.post("/", validateListing , isLoggedIn , wrapAsync(newListingCtrlr));
 
 // Display form for new listing input
 router.get("/new" , isLoggedIn , (req,resp)=>{
@@ -85,33 +26,9 @@ router.get("/new" , isLoggedIn , (req,resp)=>{
 })
 
 // SHOW ROUTE 
-router.get("/:id",wrapAsync(async(req,resp)=>{
-    let {id}=req.params;
-    let listingData=await Listing.findById(id)
-                .populate({
-                    path:"reviews",
-                    populate:{
-                        path:"author"
-                    }
-                })        // populate to get details of the reviews
-                .populate("owner")
-    console.log("listingData in showListing: ",listingData);
-    if(!listingData){
-        req.flash("error","Requested listing does not exist");
-        resp.redirect("/listings");
-    }else{
-        // console.log("SHOW LISTING DATA: ",listingData);
-        resp.render("./listings/showListing.ejs",{listingData:listingData});
-    }
-}))
+router.get("/:id",wrapAsync(showListingCtrlr));
 
 // INDEX ROUTE
-router.get("/", wrapAsync(async (req,resp)=>{
-    let allListings=await Listing.find({});
-    // console.log(allListings);
-    // console.log("req.user(in listingsRoutes.js) after login: ",req.user);
-    
-    resp.render("./listings/index.ejs",{allListings:allListings});
-}))
+router.get("/", wrapAsync(indexListingsCtrlr));
 
 module.exports=router;
