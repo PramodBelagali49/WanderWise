@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV != "production"){
+    require("dotenv").config();
+}
+
 const express=require("express");
 const app=express();
 const mongoose=require("mongoose");
@@ -141,7 +145,7 @@ app.use((req,resp,next)=>{
  
 // Listings related all routes imported from listingsRoutes.js file
 const listingroutes=require("./routes/listingsRoutes.js")
-app.use("/listings",listingroutes);
+app.use("/",listingroutes);
 
 // Reviews related all routes imported from reviewsRoutes.js file
 const revroutes=require("./routes/reviewsRoutes.js")

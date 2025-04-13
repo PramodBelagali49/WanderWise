@@ -35,21 +35,26 @@ module.exports.showListingCtrlr=async(req,resp)=>{
 
 // To create a new Listing
 module.exports.newListingCtrlr=async (req,resp,next)=>{   // validateListing as middleware for server side validation
-    console.log("req.body:(in new listing route)",req.body);
+    // console.log("req.body:(in new listing route)",req.body);
 
     let result=listingSchema.validate(req.body);                   // SERVER SIDE VALIDATION USING JOI PACKAGE
-    // console.log(result.error)
     if(result.error){
         throw new ExpressError(400,result.error); 
     }
-
+    // resp.send(req.file);
+    
     let listing=req.body;
     const newListing=new Listing(listing);
-    console.log("newListing object before saving: ",newListing);
+    // console.log("newListing object before saving: ",newListing);
     newListing.owner=req.user._id;
+    if(req.file){
+        let url=req.file.path;
+        let filename=req.file.filename;
+        newListing.image={url,filename};
+    }
+    // console.log("New listing: ",newListing);
     const addedListing = await newListing.save();
     console.log("addedListing object after saving: ",addedListing);
-    // console.log("New listing added: ",addedListing);
 
     req.flash("success","New Listing Added!!");
     resp.redirect("/listings");
@@ -81,6 +86,12 @@ module.exports.updateListingCtrlr=async(req,resp)=>{
     console.log("Request body: ",req.body);
     let updatedListing={...req.body.listing};
     const updated= await Listing.findByIdAndUpdate(id,updatedListing,{new:true});
+    if(req.file){
+        let url=req.file.path;
+        let filename=req.file.filename;
+        updated.image={url,filename};
+        await updated.save();
+    }
     console.log("UPDATED DATA: ",updated);
     req.flash("success","Listing Updated !");
     resp.redirect(`/listings/${id}`);
