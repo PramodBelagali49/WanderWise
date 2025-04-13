@@ -71,7 +71,10 @@ module.exports.editListingFormCtrlr=async(req,resp)=>{
         resp.redirect("/listings");
     }else{
         console.log("EDIT LISTING DATA: ",listingData);
-        resp.render("./listings/editListing.ejs",({listingData:listingData}));
+        let originalImageUrl=listingData.image.url;
+        // originalImageUrl = originalImageUrl.replace("/upload","/upload/h_300,w_250");
+        console.log("originalImageUrl: ",originalImageUrl);
+        resp.render("./listings/editListing.ejs",{listingData,originalImageUrl});
     }
 };
 

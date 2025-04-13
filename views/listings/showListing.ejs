@@ -7,7 +7,7 @@
         </div>
         
         <div class="card col-6 offset-3 show-card mb-2">
-            <img src="<%= listingData.image.url ? listingData.image.url : listingData.image %>"
+            <img src="<%= listingData.image.url %>"
                 class="card-img-top show-img"
                 alt="listing_image"
                 style="object-fit: auto;"
@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <% if (currUser && currUser._id.equals(listingData.owner._id)) { %>      %>
+        <% if (currUser && currUser._id.equals(listingData.owner._id)) { %>
             <div class="btns mb-3">
                 <a href="/listings/<%=listingData._id%>/edit" class="btn btn-dark col-1 offset-3"> 
                     Edit
