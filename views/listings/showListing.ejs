@@ -1,4 +1,8 @@
 <%- layout("/layouts/boilerplate.ejs") %>
+<script>
+    const mapToken = "<%= process.env.MAP_BOX_TOKEN %>"
+    const listingData = <%- JSON.stringify(listingData) %>
+</script>
 <body>
     <div class="row">
         
@@ -72,16 +76,17 @@
                     <!-- <br> -->
                     <button class="btn btn-outline-dark  mb-3" type="submit">Submit</button>
                 </form>
-                <script src="../../public/js/script.js"></script>        <!-- For server bootstrap form validation -->
+                <!-- <script src="/js/script.js"></script>        <%#  For server bootstrap form validation %> -->
+                 
             <% } %>
             <hr>
 
-            <h4 class="col-6 mt-6 mb-4"> &nbsp;All Reviews</h4>
+            <h4 class="col-6 mt-6 mb-3"> &nbsp;All Reviews</h4>
 
             <div class="row">
                 <% if (listingData.reviews.length) { %>
                         <% for( review of listingData.reviews) { %>
-                            <div class="card col-5 ms-3 mb-5 cardReview" style="width: 18rem;">
+                            <div class="card col-5 ms-3 mb-2 cardReview" style="width: 18rem;">
                                 <div class="card-body">
                                     <h5 class="card-title"> @<%=review.author.username%> </h5>
                                     <p class="starability-result" data-rating="<%=review.rating%>">
@@ -100,13 +105,20 @@
                 <% } %>
             </div>
 
-            <div class="mt-1">
+            <div class="mt-4 offset-4">
                 <% if (!currUser) { %>
                     <form action="/login">
                         <button class="btn btn-warning">Login to leave a review</button>
                     </form>
                 <% } %>
             </div>
+        </div>
+
+        <div class="col-8 offset-3 mb-3">
+            <hr>
+            <h3>Where You'll Be</h3>
+            <div id="map"></div>
+            <script src="/js/mapScript.js"></script>
         </div>
     </div>
 </body>
