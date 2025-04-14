@@ -25,7 +25,7 @@ router
 router
     .route("/listings")
     .get(wrapAsync(indexListingsCtrlr))     // INDEX ROUTE
-    .post(isLoggedIn, upload.single("image[filename]"), validateListing, wrapAsync(newListingCtrlr))   // CREATE NEW LISTING ROUTE
+    .post(isLoggedIn, upload.single("image[filename]"), validateListing, wrapAsync(newListingCtrlr))   // CREATE NEW LISTING ROUTE  (validateListing as middleware for server side validation)
                 // for multer-storage-cloudinary
     // .post(upload.single("image[filename]"),(req,resp)=>{
     //     // resp.file(req.file.path);

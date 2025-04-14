@@ -2,6 +2,11 @@ const { listingSchema } = require("../Joi_Schema");
 const Listing = require("../models/listing");
 const ExpressError = require("../utils/ExpressError");
 
+// for map-box
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapToken=process.env.MAP_BOX_TOKEN ;
+const geocodingClient = mbxGeocoding({ accessToken: mapToken});
+
 
 // To Show all Listings
 module.exports.indexListingsCtrlr=async (req,resp)=>{
@@ -34,15 +39,12 @@ module.exports.showListingCtrlr=async(req,resp)=>{
 
 
 // To create a new Listing
-module.exports.newListingCtrlr=async (req,resp,next)=>{   // validateListing as middleware for server side validation
-    // console.log("req.body:(in new listing route)",req.body);
-
+module.exports.newListingCtrlr=async (req,resp,next)=>{   
     let result=listingSchema.validate(req.body);                   // SERVER SIDE VALIDATION USING JOI PACKAGE
     if(result.error){
         throw new ExpressError(400,result.error); 
     }
     // resp.send(req.file);
-    
     let listing=req.body;
     const newListing=new Listing(listing);
     // console.log("newListing object before saving: ",newListing);
@@ -52,10 +54,16 @@ module.exports.newListingCtrlr=async (req,resp,next)=>{   // validateListing as 
         let filename=req.file.filename;
         newListing.image={url,filename};
     }
-    // console.log("New listing: ",newListing);
+    // Mapbox-API for geocoding the location
+    let response=await geocodingClient.forwardGeocode({
+        query: req.body.location ,
+        limit: 1
+    })
+    .send();
+    newListing.geometry=response.body.features[0].geometry;
     const addedListing = await newListing.save();
-    console.log("addedListing object after saving: ",addedListing);
-
+    console.log("New listing added: ",addedListing);
+    
     req.flash("success","New Listing Added!!");
     resp.redirect("/listings");
 };
