@@ -117,3 +117,9 @@ body {
 .cardReview{
     border: 1px solid black !important;
 }
+
+/* MAP */
+#map{
+    height: 400px;
+    width: 80vh;
+}
