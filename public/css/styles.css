@@ -106,7 +106,9 @@ body {
 /* in showListing */
 .btns{
     display: flex;
+    text-align: center;
 }
+
 
 .show-card{
     padding-left: 0;
