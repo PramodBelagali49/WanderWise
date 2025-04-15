@@ -156,7 +156,7 @@ const userRoutes=require("./routes/usersRoutes.js")
 app.use("/",userRoutes);
 
 app.get("/",(req,resp)=>{
-    resp.send("Welcome to home page bhai");
+    resp.redirect("/listings");
 })
 
 app.all("*",(req,resp,next)=>{
