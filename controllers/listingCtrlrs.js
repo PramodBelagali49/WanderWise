@@ -2,10 +2,10 @@ const { listingSchema } = require("../Joi_Schema");
 const Listing = require("../models/listing");
 const ExpressError = require("../utils/ExpressError");
 
-// for map-box
-const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
-const mapToken=process.env.MAP_BOX_TOKEN ;
-const geocodingClient = mbxGeocoding({ accessToken: mapToken});
+// for map-box;
+// const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+// const mapToken=process.env.MAP_BOX_TOKEN;
+// const geocodingClient = mbxGeocoding({ accessToken: mapToken});
 
 
 // To Show all Listings
@@ -28,6 +28,28 @@ module.exports.showListingCtrlr=async(req,resp)=>{
                 })        // populate to get details of the reviews
                 .populate("owner")
     console.log("listingData in showListing: ",listingData);
+
+                    // TRYING TO SHOW THE ALREADY EXISTING LOCATIONS ON MAP 
+    // let response=await geocodingClient.forwardGeocode({
+    //     query: listingData.location ,
+    //     limit: 1
+    // })
+    // .send();
+    // let coordinates=response.body.features[0].geometry.coordinates;
+    // let lng=coordinates[0];
+    // let lat=coordinates[1];
+
+    // mapboxgl.accessToken = mapToken;
+
+    // const map = new mapboxgl.Map({
+    //     container: 'map',
+    //     // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+    //     style: 'mapbox://styles/mapbox/streets-v12',
+    //     center: listingData.geometry.coordinates,     // JSON.parse converts the coordinates string to array or object
+    //     zoom: 6
+    // });
+
+
     if(!listingData){
         req.flash("error","Requested listing does not exist");
         resp.redirect("/listings");
@@ -54,13 +76,15 @@ module.exports.newListingCtrlr=async (req,resp,next)=>{
         let filename=req.file.filename;
         newListing.image={url,filename};
     }
+    
     // Mapbox-API for geocoding the location
-    let response=await geocodingClient.forwardGeocode({
-        query: req.body.location ,
-        limit: 1
-    })
-    .send();
-    newListing.geometry=response.body.features[0].geometry;
+    // let response=await geocodingClient.forwardGeocode({
+    //     query: req.body.location ,
+    //     limit: 1
+    // })
+    // .send();
+    // newListing.geometry=response.body.features[0].geometry;
+
     const addedListing = await newListing.save();
     console.log("New listing added: ",addedListing);
     
