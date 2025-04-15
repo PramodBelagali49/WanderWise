@@ -4,8 +4,7 @@ module.exports.listingSchema=Joi.object({
     title: Joi.string().required(),
 
     description : Joi.string()
-                    .required()
-                    .max(40),
+                    .required(),
 
     price: Joi.number().min(0).required(),
 
