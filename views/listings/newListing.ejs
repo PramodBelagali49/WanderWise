@@ -1,20 +1,31 @@
 <%- layout("/layouts/boilerplate.ejs") %>
 
 <body>
-
     <div class="row">
         <div class="col-8 offset-2">
             <h2 class="mt-3 mb-2">Enter details of new listing</h2>
 
-            <form action="/listings" method="POST" class="needs-validation" enctype="multipart/form-data">
+            <form action="/listings" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
                     <input name="title" class="form-control" type="text" placeholder="Enter a title.." required>
+                    <div class="valid-feedback">
+                        Looks Good !!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please choose a username.
+                    </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
                     <textarea  name="description" class="form-control" placeholder="Add a description.." required></textarea>
+                    <div class="invalid-feedback">
+                        Please add a few lines about the listing
+                    </div>
+                    <div class="valid-feedback">
+                        Looks fine !!
+                    </div>
                 </div>
                 
                 <div class="mb-3">
@@ -25,27 +36,40 @@
 
                     <label for="image" class="form-label">Upload listing image</label>
                     <input name="image[filename]" class="form-control" type="file" required>
+                    <div class="invalid-feedback">
+                        Upload an Image
+                    </div>
                 </div>
 
                 <div class="row">
                     <div class="mb-3 col-md-4">
                         <label for="price" class="form-label">Price</label>
                         <input name="price" class="form-control" type="text" placeholder="Add the price.." required>
+                        <div class="invalid-feedback">
+                            Add valid price
+                        </div>
                     </div>
 
                     <div class="mb-3 col-md-8">
                         <label for="country" class="form-label">Country</label>
                         <input name="country"  class="form-control" placeholder="Enter the country.." type="text" required>
+                        <div class="invalid-feedback">
+                            Please provide a valid country name.
+                        </div>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="location" class="form-label">Location</label>
                     <input name="location" class="form-control" placeholder="Enter the location.." type="text" required>
+                    <div class="invalid-feedback">
+                        Please provide valid location.
+                    </div>
                 </div>
 
                 <button class="btn btn-primary mb-3">Submit</button>
             </form>
+            <script src="/js/script.js"></script>
         </div>
     </div>
 </body>
