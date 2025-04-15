@@ -17,6 +17,10 @@ router.get("/",(req,resp)=>{
     let {id}=req.params;
     resp.redirect(`/listings/${id}`);
 })
+router.get("/:reviewId",(req,resp)=>{
+    let {id}=req.params;
+    resp.redirect(`/listings/${id}`);
+})
 
 
 // REVIEWS DELETE ROUTE
