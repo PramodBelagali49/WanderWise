@@ -13,6 +13,7 @@ router.post("/",isLoggedIn,validateReview,wrapAsync(postReviewCtrlr))  // valida
 // {needed when somehow you are adding a review without logging in ; and you submit review,it asks you to login , after login it would give "page not found" error}
 // {bcz the request was earlier being made to /listings/id/reviews for which there was no get request, that's why this one}
 // YOU CAN COMPLETELY IGNORE IT
+
 router.get("/",(req,resp)=>{
     let {id}=req.params;
     resp.redirect(`/listings/${id}`);

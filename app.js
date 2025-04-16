@@ -69,7 +69,6 @@ app.get("/getCookies",(req,resp)=>{
 */
 
 // SESSIONS
-
 // MONGO-SESSION for production environment 
 const MongoStore = require('connect-mongo');   // need to require expression session always with mongo session
 const store=MongoStore.create({
@@ -87,7 +86,7 @@ store.on("error",(err)=>{
 // EXPRESS-SESSION
 const session=require("express-session");
 const sessionOptions={
-    store:store,
+    store: store,
     secret: process.env.SESSION_SECRET_KEY,
     resave: false,
     saveUninitialized: true,
