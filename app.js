@@ -19,14 +19,18 @@ app.use(express.static(path.join(__dirname,"/public")));
 const ejsMate=require("ejs-mate");
 app.engine("ejs",ejsMate);
 
+const flash=require("connect-flash");
+
 // for authentication using passport
 const passport=require("passport");
 const LocalStrategy=require("passport-local");
 const User=require("./models/user.js");
 
+// const localMongoUrl="mongodb://127.0.0.1:27017/WanderWise";
+const atlasDbUrl=process.env.ATLAS_DB_URL;
 async function  main(){
     try{
-        await mongoose.connect("mongodb://127.0.0.1:27017/WanderWise");
+        await mongoose.connect(atlasDbUrl);
         console.log("Connection to MongoDB Successful");
     }catch(err){
         console.log("Some error occured while connecting to db",err);
@@ -66,12 +70,27 @@ app.get("/getCookies",(req,resp)=>{
 
 // SESSIONS
 
+// MONGO-SESSION for production environment 
+const MongoStore = require('connect-mongo');   // need to require expression session always with mongo session
+const store=MongoStore.create({
+    mongoUrl:atlasDbUrl,
+    crypto:{
+        secret: process.env.SESSION_SECRET_KEY,
+        touchAfter: 24*3600
+    }
+})
+
+store.on("error",(err)=>{
+    console.log("Error in mongo session store ",err);
+})
+
+// EXPRESS-SESSION
 const session=require("express-session");
-const flash=require("connect-flash");
 const sessionOptions={
-    secret:"##$secretcode$**",
-    resave:false,
-    saveUninitialized:true,
+    store:store,
+    secret: process.env.SESSION_SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
     cookie:{
         expires: Date.now() + 7*24*60*60*1000 ,
         maxAge: 7*24*60*60*1000,
@@ -108,10 +127,6 @@ app.use("/hello",(req,resp)=>{
     // resp.send(`Hello , ${req.session.name} !!`);
 })
 */
-
-
-
-// SESSION IMPLEMENTATION IN THE PROJECT
 
 
 // session must be created along with passport initialization always
@@ -152,7 +167,8 @@ const revroutes=require("./routes/reviewsRoutes.js")
 app.use("/listings/:id/reviews",revroutes);
 
 // Users related routes form signup and login
-const userRoutes=require("./routes/usersRoutes.js")
+const userRoutes=require("./routes/usersRoutes.js");
+const { error } = require("console");
 app.use("/",userRoutes);
 
 app.get("/",(req,resp)=>{
