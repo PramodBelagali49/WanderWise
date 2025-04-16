@@ -1,3 +1,16 @@
+<style>
+  #searchBtn i{
+    display: inline;
+    margin-right: 0.5rem;
+  }
+  #searchBtn , .auth-btn{
+    border-radius: 1.5rem;
+  }
+  .form-control{
+    width: 20rem;
+    border-radius: 1rem;
+  }
+</style>
 <body>
     <nav class="navbar navbar-expand-md bg-body-light sticky-top">
         <div class="container-fluid">
@@ -10,41 +23,40 @@
           
           <div class="collapse navbar-collapse" id="navbarNav">
 
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="/listings">Home</a>
-              </li>
-              <!-- <li class="nav-item">
-                <a class="nav-link" href="/listings">All Listings</a>
-              </li> -->
-              <li class="nav-item">
-                <a class="nav-link" href="/listings/new">Add new listing</a>
-              </li>
-            </ul>
+            <div class="navbar-nav">
+              <a class="nav-link" aria-current="page" href="/listings">Home</a>
+              <a class="nav-link" href="/listings/new">Add new listing</a>
+            </div>
 
-            <ul class="navbar-nav ms-auto">
+            <div class="navbar-nav ms-auto">
+              <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search destination...">
+                <button class="btn btn-outline-primary" type="submit" id="searchBtn"> <i class="fa-solid fa-magnifying-glass inline"></i>Search</button>
+              </form>
+            </div>
+
+            <div class="navbar-nav ms-auto">
               <!-- currUser from resp.locals.currUser=req.user in app.js middleware -->
               <% if (!currUser) { %>
                   <li class="nav-item">
-                    <button class="btn btn-sm btn-primary">
+                    <button class="btn btn-sm btn-primary auth-btn">
                       <a class="nav-link" aria-current="signup" href="/signup">SignUp</a>
                     </button>
                   </li>
                   <li class="nav-item">
-                     <button class="btn btn-sm btn-success">
+                     <button class="btn btn-sm btn-success auth-btn">
                         <a class="nav-link" href="/login">Login</a>
                      </button>
                   </li>
               <% }%>
               <% if (currUser) { %>
                   <li class="nav-item">
-                    <button class="btn btn-danger btn-sm ">
+                    <button class="btn btn-danger btn-sm auth-btn">
                       <a class="nav-link" href="/logout">Logout</a>
                     </button>
                   </li>
               <% } %>
-            </ul>
-          </div>
+            </div>
 
         </div>
       </nav>
