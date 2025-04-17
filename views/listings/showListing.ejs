@@ -19,6 +19,7 @@
             <div class="card-body">
                 <p class="card-text">
                     <i> <%= listingData.description %> </i>    <br> 
+                    <p>Category: </p><%= listingData.category %>
                     <p>Hosted by <b> <%= listingData.owner.username %> </b> </p>
                     &#8377; <%= listingData.price.toLocaleString("en-IN") %>/night  <br>
                     <i class="fa-solid fa-location-dot"></i> <%= listingData.location %>    <br>
@@ -44,13 +45,11 @@
         <% } %>
 
         <div class="col-8 offset-3 mt-3 mb-3">
-
             <% if (currUser) { %>
                 <hr>
                 <h3>Leave a review</h3>
-                <form action="/listings/<%=listingData._id%>/reviews" method="POST" class="needs-validation">
+                <form action="/listings/<%=listingData._id%>/reviews" method="POST" class="needs-validation" novalidate>
                     <div class="mt-3">
-
                         <label for="rating" class="form-label">Rating</label>
                         <fieldset class="starability-heart">
                             <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
@@ -65,12 +64,14 @@
                             <input type="radio" id="first-rate5" name="review[rating]" value="5" />
                             <label for="first-rate5" title="Amazing">5 stars</label>
                         </fieldset>
-
                     </div>
     
                     <div class="mb-3">
                         <label for="comment" class="form-label">Comment</label>
                         <textarea name="review[comment]" id="comment" rows="5" cols="30" class="form-control" required></textarea>
+                        <div class="invalid-feedback">
+                            Add a comment for the review
+                        </div>
                     </div>
                     <!-- <br> -->
                     <button class="btn btn-outline-dark mb-2" type="submit" style="margin-left: 0.3rem;">Submit</button>
@@ -85,7 +86,7 @@
             <div class="row">
                 <% if (listingData.reviews.length) { %>
                         <% for( review of listingData.reviews) { %>
-                            <div class="card col-5 ms-3 mb-3 mt-2 cardReview" style="width: 18rem;">
+                            <div class="card col-5 ms-3 mb-3 mt-2 cardReview" style="width: 25rem;">
                                 <div class="card-body">
                                     <h5 class="card-title"> @<%=review.author.username%> </h5>
                                     <p class="starability-result" data-rating="<%=review.rating%>">
