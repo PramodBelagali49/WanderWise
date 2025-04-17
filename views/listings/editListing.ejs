@@ -37,6 +37,29 @@
                     <label for="image" class="form-label">Upload New Image</label>
                     <input name="listing[image[filename]]" class="form-control" type="file">
                 </div>
+
+                <div class="mb-3">
+                    <label for="category" class="block mb-2 font-semibold">Choose a different category</label> <br>
+                    <select name="category" id="category" class="p-2 border rounded-md w-full form-control">
+                        <option disabled selected><%= listingData.category %></option>
+                        <option value="Trending">Trending</option>
+                        <option value="Rooms">Rooms</option>
+                        <option value="Iconic Cities">Iconic Cities</option>
+                        <option value="Historical">Historical</option>
+                        <option value="Beaches">Beaches</option>
+                        <option value="Camping">Camping</option>
+                        <option value="Farms">Farms</option>
+                        <option value="Hill Station">Hill Station</option>
+                        <option value="Boating">Boating</option>
+                        <option value="Amazing Pools">Amazing Pools</option>
+                        <option value="Snowy">Snowy</option>
+                        <option value="Nature">Nature</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Select a category for the listing
+                    </div>
+                </div>
                 
 
                 <div class="row">
