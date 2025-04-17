@@ -24,7 +24,7 @@
   }
   .tax-toggle{
     border: 1px solid black;
-    height: 2.5rem;
+    height: 2.8rem;
     border-radius: 1rem;
     display: flex;
     align-items: center;
@@ -35,93 +35,104 @@
   }
 </style>
 <body>
+    <form id="categoryForm" method="get" action="/listings/category">
+      <input type="hidden" id="categoryInput" name="categoryVal"/>
+    </form> 
   
     <!-- <h1>All Listings</h1> -->
     <div id="filters">
-      <div class="filter" onclick="submitForm('Trending')">
+      <div class="filter" onclick="categoryFormSubmit('Trending')">
           <div><i class="fa-solid fa-fire"></i></div>
           <p>Trending</p>
       </div>
 
-      <div class="filter" onclick="submitForm('Rooms')">
+      <div class="filter" onclick="categoryFormSubmit('Camping')" >
+        <div><i class="fa-solid fa-campground"></i></div>
+        <p>Camping</p>
+      </div>
+
+      <div class="filter" onclick="categoryFormSubmit('Hill Station')">
+        <div><i class="fa-solid fa-mountain-sun"></i></div>
+        <p>Hill Station</p>
+      </div>
+
+      <div class="filter" onclick="categoryFormSubmit('Rooms')">
           <div><i class="fa-solid fa-bed"></i></div>
           <p>Rooms</p>
       </div>
 
-      <div class="filter" onclick="submitForm('Iconic cities')">
+      <div class="filter" onclick="categoryFormSubmit('Iconic cities')">
           <div><i class="fa-solid fa-mountain-city"></i></div>
           <p>Iconic cities</p>
       </div>
 
-      <div class="filter" onclick="submitForm('Mountains')">
-          <div><i class="fa-solid fa-mountain"></i></div>
-          <p>Mountains</p>
-      </div>
-
-      <div class="filter" onclick="submitForm('Castles')">
+      <div class="filter" onclick="categoryFormSubmit('Historical')">
           <div><i class="fa-brands fa-fort-awesome"></i></div>
-          <p>Castles</p>
+          <p>Historical</p>
       </div>
 
-      <div class="filter" onclick="submitForm('Amazing pools')">
+      <div class="filter" onclick="categoryFormSubmit('Amazing Pools')">
           <div><i class="fa-solid fa-person-swimming"></i></div>
           <p>Amazing pools</p>
       </div>
 
-      <div class="filter" onclick="submitForm('Camping')" >
-          <div><i class="fa-solid fa-campground"></i></div>
-          <p>Camping</p>
+      <div class="filter" onclick="categoryFormSubmit('Beaches')">
+        <div><i class="fa-solid fa-umbrella-beach"></i></div>
+        <p>Beaches</p>
       </div>
 
-      <div class="filter" onclick="submitForm('Farms')">
-          <div><i class="fa-solid fa-cow"></i></div>
+      <div class="filter" onclick="categoryFormSubmit('Nature')">
+        <div><i class="fa-solid fa-seedling"></i></div>
+        <p>Nature</p>
+      </div>
+
+      <div class="filter" onclick="categoryFormSubmit('Farms')">
+          <div><i class="fa-solid fa-wheat-awn"></i></div>
           <p>Farms</p>
       </div>
 
-      <div class="filter" onclick="submitForm('Arctic')">
+      <div class="filter" onclick="categoryFormSubmit('Snowy')">
           <div><i class="fa-regular fa-snowflake"></i></div>
-          <p>Arctic </p>
+          <p>Snowy</p>
       </div>
-
-      <div class="filter" onclick="submitForm('Beaches')">
-          <div><i class="fa-solid fa-umbrella-beach"></i></div>
-          <p>Beaches </p>
-      </div>
-
-      <div class="filter" onclick="submitForm('Boats')">
+      
+      <div class="filter" onclick="categoryFormSubmit('Boating')">
           <div><i class="fa-solid fa-ship"></i></div>
-          <p>Boats </p>
+          <p>Boating</p>
       </div>
+      
+      <script>
+        function categoryFormSubmit(category){
+          document.getElementById("categoryInput").value=category,
+          document.getElementById("categoryForm").submit();
+        }
+      </script>
 
       <div class="tax-toggle">
         <div class="form-check form-switch">
           <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
-          <label class="form-check-label" for="switchCheckDefault">Display total after taxes</label>
+          <label class="form-check-label" for="switchCheckDefault">Display Price with taxes</label>
         </div>
       </div>
+
     </div>
 
     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+      <%# This is to display all listings %>
         <% for(let listing of allListings) { %>
             <a href="/listings/<%=listing._id%>" class="listing-link">
-                
               <div class="card col">
-
-                    <!-- TO FIX HERE LISTING.IMAGE.URL OR LISTING.IMAGE ALONE-->
-
                     <img src="<%= listing.image.url %>" alt="Listing Image"
                         class="card-img-top" 
                         alt="listing_image" 
                         style="height: 20rem;"
                     />
-
                     <div class="card-img-overlay"></div>
-
                     <div class="card-body">
                       <p class="card-text">
                         <b> <%= listing.title %> </b> <br>
                         &#8377; <%= listing.price.toLocaleString("en-IN") %>/night
-                        <i class="tax-info"> &nbsp;+ 18% GST</i> <br>
+                        <i class="tax-info"> + &#8377;<%= (listing.price + (listing.price * 0.14)).toLocaleString("en-IN") %>   </i> <br>
                       </p>
                     </div>
                   </div>

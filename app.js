@@ -30,14 +30,13 @@ const User=require("./models/user.js");
 const atlasDbUrl=process.env.ATLAS_DB_URL;
 async function  main(){
     try{
-        await mongoose.connect(atlasDbUrl);
+        await mongoose.connect(atlasDbUrl.toString());
         console.log("Connection to MongoDB Successful");
     }catch(err){
-        console.log("Some error occured while connecting to db",err);
+        console.log("Error connecting to mongodb ",err);
     }
 }
 main();  // Calling main() after defining it is better than calling it before , although it works fine
-
 
 // COOKIES
 // requiring cookie-parser npm package

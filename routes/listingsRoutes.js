@@ -6,11 +6,22 @@ const { showListingCtrlr, newListingCtrlr, editListingFormCtrlr, updateListingCt
 
 const multer = require("multer");
 const { storage } = require("../cloudConfig.js");
+const Listing = require("../models/listing.js");
 const upload=multer({storage});
 
 // Display form for new listing input
 router.get("/listings/new" , isLoggedIn , (req,resp)=>{
     resp.render("./listings/newListing.ejs");
+})
+
+
+// SHOW CATEGORY ROUTE
+router.get("/listings/category",async(req,resp)=>{
+    // console.log(req.query.categoryVal);
+    let {categoryVal}=req.query;    // from form data in index.ejs
+    let categoryListings=await Listing.find({category:categoryVal});
+    // console.log(categoryListings);
+    resp.render("./listings/categoryListings.ejs",{categoryListings});
 })
 
 // SINGLE LISTING  

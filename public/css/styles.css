@@ -2,9 +2,8 @@ body {
     font-family: 'Plus Jakarta Sans', sans-serif !important;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
 }
-
 .container{
     flex:1; 
 }
@@ -15,14 +14,16 @@ body {
     font-size: 1.6rem;
 }
 
+
 /* NAVBAR styling */
 .nav-item{
     color: #222222;
 }
 .navbar{
     height: 5rem;
-    background-color: #f7f6f6;
-    border-radius: 1.1rem;
+    border: 1px solid rgb(223, 209, 209);
+    background-color: #f7f6f7;
+    /* border-radius: 1.0rem; */
 }
 #navbarNav{
     margin-block-start: auto ;
@@ -52,10 +53,11 @@ body {
 .f-info {
     text-align: center;
     height: 8rem;
-    background-color: #ebebeb;
+    background-color: #f7f6f7;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    border: 1px solid rgb(223, 209, 209);
 }
 
 /* IN the Index.ejs (for all listings) */
@@ -117,4 +119,3 @@ body {
     height: 400px;
     width: 80vh;
 }
-
