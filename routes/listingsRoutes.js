@@ -21,7 +21,7 @@ router
     .delete(isLoggedIn, isOwner, wrapAsync(deleteListingCtrlr))  // DELETE ROUTE
 
 
-// ALL LISTINGS
+// ALL LISTINGS (post a listing)
 router
     .route("/listings")
     .get(wrapAsync(indexListingsCtrlr))     // INDEX ROUTE

@@ -174,7 +174,7 @@ app.get("/",(req,resp)=>{
     resp.redirect("/listings");
 })
 
-app.all("/*path",(req,resp,next)=>{
+app.all("/*path",(req,resp,next)=>{     // same as app.use(*,(req,resp)=>{})  * is replaced by /*path
     next(new ExpressError(404,"PaGe NoT FoUnD"));
 })
 
