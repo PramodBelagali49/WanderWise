@@ -1,1 +1,1 @@
-# wanderlust
+# WanderWise
