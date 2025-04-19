@@ -133,3 +133,117 @@ body {
     height: 400px;
     width: 80vh;
 }
+
+
+/* Making Navbar.ejs responsive */
+@media (max-width: 768px) {
+    .navbar-collapse {
+      position: static !important;
+      background-color: #f8f9fa;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      z-index: 0;
+    }
+  
+    .position-absolute.start-50.translate-middle-x {
+      position: static !important;
+      transform: none !important;
+      margin-bottom: 1rem;
+    }
+  
+    .navbar-nav {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-left: 0.5rem;
+    }
+  
+    /* ✨ Wrapping search input + button in a flex container */
+    .navbar-collapse form.d-flex {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      width: 80%;
+      gap: 0.5rem;
+      overflow: hidden;
+    }
+  
+    #srcInput {
+      flex: 1 1 auto;
+      min-width: 0;
+      height: 2.5rem;
+      margin-top: 0.5rem;
+    }
+    .nav-item{
+      margin-bottom: 0.8rem;
+    }
+  
+    #searchBtn {
+      flex: 0 0 auto;
+      height: 2.5rem;
+      padding: 0 0.8rem;
+      white-space: nowrap;
+      font-size: 0.9rem;
+    }
+  
+    body {
+      overflow-x: hidden; /* 🔒 Stop horizontal scrolling globally */
+    }
+}
+
+
+/* Making showListing.ejs responsive */
+@media (max-width: 768px) {
+    body {
+        padding: 0 1rem;
+    }
+
+    .show-img {
+        height: 30vh;
+    }
+
+    .card, .show-card, .cardReview {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .col-8, .col-6, .offset-3, .offset-4, .offset-5, .col-5 {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .btns {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    .btns .btn {
+        width: 90%;
+    }
+
+    form button.btn {
+        width: 90%;
+        margin: 0.5rem 0;
+    }
+
+    #map {
+        height: 250px;
+        width: 100%;
+    }
+
+    .cardReview {
+        width: 100% !important;
+    }
+
+    .row {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}

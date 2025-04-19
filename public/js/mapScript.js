@@ -26,7 +26,7 @@ async function geocode(){
         // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
         style: 'mapbox://styles/mapbox/streets-v12',
         center: coordinates,     // JSON.parse converts the coordinates string to array or object
-        zoom: 6
+        zoom: 5
     });
     
     // Create a default Marker and add it to the map.
