@@ -16,13 +16,8 @@
     padding-left: 10px;
     border: 1px solid rgb(74, 74, 138);
   }
-  @media (max-width: 768px) { 
-  .navbar-nav .nav-link,
-  .navbar-nav .btn,
-  .nav-item {
-    margin-bottom: 0.5rem;
-  }
 
+ @media (max-width: 768px) {
   .navbar-collapse {
     position: static !important;
     background-color: #f8f9fa;
@@ -39,35 +34,45 @@
     margin-bottom: 1rem;
   }
 
-  /* Flex container for input + button */
+  .navbar-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 0.5rem;
+  }
+
+  /* ✨ Wrapping search input + button in a flex container */
   .navbar-collapse form.d-flex {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.5rem;
-    width: 100%;
+    justify-content: space-between;
     flex-wrap: nowrap;
+    width: 80%;
+    gap: 0.5rem;
     overflow: hidden;
   }
 
   #srcInput {
-    flex: 1 1 auto; /* Flexible but doesn't shrink too small */
-    min-width: 0; /* Prevents overflow */
+    flex: 1 1 auto;
+    min-width: 0;
     height: 2.5rem;
-    margin-bottom: 0;
+    margin-top: 0.5rem;
+  }
+  .nav-item{
+    margin-bottom: 0.8rem;
   }
 
   #searchBtn {
-    flex: 0 0 auto; /* Fixed width */
+    flex: 0 0 auto;
     height: 2.5rem;
     padding: 0 0.8rem;
     white-space: nowrap;
+    font-size: 0.9rem;
   }
 
-  .navbar-nav.ms-auto {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  body {
+    overflow-x: hidden; /* 🔒 Stop horizontal scrolling globally */
   }
 }
 
