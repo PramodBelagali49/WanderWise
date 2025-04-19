@@ -121,7 +121,6 @@ module.exports.updateListingCtrlr=async(req,resp)=>{
     console.log("Request body: ",req.body);
     let updatedListing={...req.body.listing};
     const updated= await Listing.findByIdAndUpdate(id,updatedListing,{new:true});
-    updated.category=req.body.category;
     if(req.file){
         let url=req.file.path;
         let filename=req.file.filename;
