@@ -133,13 +133,47 @@ module.exports.updateListingCtrlr=async(req,resp)=>{
 };
 
 
-// Delete listing
+// Delete Listing
 module.exports.deleteListingCtrlr=async(req,resp)=>{
     let {id}=req.params;
     const deleted=await Listing.findByIdAndDelete(id,{new:true});
     // console.log("DELETED LISTING: ",deleted);
-
+ 
     req.flash("success","Listing deleted !!");
     resp.redirect("/listings");
 };
 
+
+// Show Category Listings
+module.exports.categoryListingsCtrlr=async(req,resp)=>{
+    // console.log(req.query.categoryVal);
+    let {categoryVal}=req.query;    // from form data in index.ejs
+    let categoryListings=await Listing.find({category:categoryVal});
+    // console.log(categoryListings);
+    resp.render("./listings/categoryListings.ejs",{categoryListings});
+};
+
+
+// Search Listing
+module.exports.searchListingCtrlr=async(req,resp)=>{
+    // console.log("req.body: ",req.body);
+    let searchTerm=req.body.searchTerm;
+    // console.log("search term: ",searchTerm);
+    let regexp=new RegExp(escapeRegex(searchTerm),'i');
+    // console.log("regexp: ",regexp);
+
+    let allListings=await Listing.find({
+        $or:[
+            {location:regexp},
+            {title:regexp},
+            {country:regexp},
+            {description:regexp},
+            {category:regexp}
+        ]
+    });
+    // console.log("allListings in Search route: ",allListings);
+    resp.render("./listings/index.ejs",{allListings,searchTerm});
+};
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"); // Escape special regex characters
+}

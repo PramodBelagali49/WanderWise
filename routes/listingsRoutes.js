@@ -2,7 +2,11 @@ const express=require("express");
 const router=express.Router();
 const wrapAsync=require("../utils/wrapAsync.js");
 const { isLoggedIn, isOwner, validateListing } = require("../middlewares.js");
-const { showListingCtrlr, newListingCtrlr, editListingFormCtrlr, updateListingCtrlr, deleteListingCtrlr, indexListingsCtrlr } = require("../controllers/listingCtrlrs.js");
+const {
+        showListingCtrlr, newListingCtrlr, editListingFormCtrlr,
+        updateListingCtrlr, deleteListingCtrlr, indexListingsCtrlr, 
+        searchListingCtrlr, categoryListingsCtrlr 
+    } = require("../controllers/listingCtrlrs.js");
 
 const multer = require("multer");
 const { storage } = require("../cloudConfig.js");
@@ -15,14 +19,12 @@ router.get("/listings/new" , isLoggedIn , (req,resp)=>{
 })
 
 
+// SEARCH LISTINGS ROUTE
+router.post("/listings/search",searchListingCtrlr);
+
+
 // SHOW CATEGORY ROUTE
-router.get("/listings/category",async(req,resp)=>{
-    // console.log(req.query.categoryVal);
-    let {categoryVal}=req.query;    // from form data in index.ejs
-    let categoryListings=await Listing.find({category:categoryVal});
-    // console.log(categoryListings);
-    resp.render("./listings/categoryListings.ejs",{categoryListings});
-})
+router.get("/listings/category",categoryListingsCtrlr)
 
 // SINGLE LISTING  
 router
