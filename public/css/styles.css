@@ -30,6 +30,19 @@ body {
 }
 
 /* FOOTER styling */
+.footer-link {
+    text-decoration: none;
+    color: #0d6efd;
+}
+.footer-link:hover {
+    text-decoration: underline;
+    color: #0d6efd;
+}
+.small-links li {
+    line-height: 1.6;
+}
+
+/*    // Earlier styling from class
 .f-info-links a {
     text-decoration: none;
     color: rgb(67, 120, 234);
@@ -58,7 +71,8 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     border: 1px solid rgb(223, 209, 209);
-}
+} 
+*/
 
 /* IN the Index.ejs (for all listings) */
 /* CARD styling */
