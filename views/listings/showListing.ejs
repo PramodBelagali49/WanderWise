@@ -36,11 +36,6 @@
                 <form action="/listings/<%=listingData._id%>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure to delete the listing ?')">
                     <button type="submit" class="btn btn-danger offset-5">Delete</button>
                 </form>
-                <!-- <script>
-                    function confirmation(){
-                        return 
-                    }
-                </script> -->
             </div>
         <% } %>
 
@@ -95,7 +90,9 @@
                                 </div>
                                 <% if (currUser && currUser._id.equals(review.author._id)) { %>
                                     <form action="/listings/<%=listingData._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
+
                                         <button class="btn btn-sm btn-dark mb-1 mt-2">Delete</button>
+                                        
                                     </form>
                                 <% } %>
                             </div>
