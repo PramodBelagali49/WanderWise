@@ -133,7 +133,7 @@
                         <p class="card-text">
                           <b> <%= listing.title %> </b> <br>
                           &#8377; <%= listing.price.toLocaleString("en-IN") %>/night
-                          <i class="tax-info"> + &#8377;<%= (listing.price + (listing.price * 0.14)).toLocaleString("en-IN") %>   </i> <br>
+                          <i class="tax-info"> + &#8377;<%= (listing.price * 0.14).toLocaleString("en-IN") %>   </i> <br>
                         </p>
                       </div>
                     </div>
