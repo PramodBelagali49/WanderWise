@@ -14,14 +14,15 @@ router.post("/",isLoggedIn,validateReview,wrapAsync(postReviewCtrlr))  // valida
 // {bcz the request was earlier being made to /listings/id/reviews for which there was no get request, that's why this one}
 // YOU CAN COMPLETELY IGNORE IT
 
-router.get("/",(req,resp)=>{
-    let {id}=req.params;
-    resp.redirect(`/listings/${id}`);
-})
 router.get("/:reviewId",(req,resp)=>{
     let {id}=req.params;
     resp.redirect(`/listings/${id}`);
 })
+
+// router.get("/",(req,resp)=>{
+//     let {id}=req.params;
+//     resp.redirect(`/listings/${id}`);
+// })
 
 
 // REVIEWS DELETE ROUTE
