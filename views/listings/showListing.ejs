@@ -20,7 +20,7 @@
                 <p class="card-text">
                     <i> <%= listingData.description %> </i>    <br> 
                     <p>Category: <%= listingData.category %> </p>
-                    <p>Hosted by <b> <%= listingData.owner.username %> </b> </p>
+                    <p>Hosted by <b> <%= listingData?.owner?.username %> </b> </p>
                     &#8377; <%= listingData.price.toLocaleString("en-IN") %>/night  <br>
                     <i class="fa-solid fa-location-dot"></i> <%= listingData.location %>    <br>
                     <i class="fa-solid fa-globe"></i> <%= listingData.country %>  <br>
@@ -83,7 +83,7 @@
                         <% for( review of listingData.reviews) { %>
                             <div class="card col-5 ms-3 mb-3 mt-2 cardReview" style="width: 25rem;">
                                 <div class="card-body">
-                                    <h5 class="card-title"> @<%=review.author.username%> </h5>
+                                    <h5 class="card-title"> @<%=review?.author?.username%> </h5>
                                     <p class="starability-result" data-rating="<%=review.rating%>">
                                     </p>
                                     <p class="card-text"> <%=review.comment%> </p>
