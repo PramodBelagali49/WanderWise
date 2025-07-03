@@ -29,7 +29,7 @@ router.get("/listings/category",categoryListingsCtrlr)
 // SINGLE LISTING  
 router
     .route("/listings/:id")
-    .get(wrapAsync(showListingCtrlr))    // show route
+    .get(isLoggedIn,wrapAsync(showListingCtrlr))    // show route
     .patch(isLoggedIn, isOwner, upload.single("listing[image[filename]]"), wrapAsync(updateListingCtrlr))  // UPDATE ROUTE 
     .delete(isLoggedIn, isOwner, wrapAsync(deleteListingCtrlr))  // DELETE ROUTE
 
